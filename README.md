@@ -1,4 +1,4 @@
-# BancoJava — Simulação Bancária (exemplo)
+# BancoJava — Simulação Bancária 
 
 Projeto Java que simula operações bancárias concorrentes entre contas (depósitos, saques, juros e transferências).
 
@@ -56,61 +56,3 @@ Especificação de cada classe
 3) `SimulacaoBanco.java`
 
 - Padrão: cria duas contas e submete várias ações ao `ExecutorService` (pool fixo de 10 threads). Ao final, aguarda término (awaitTermination) e imprime os saldos finais.
-
-Como compilar e executar (Windows / PowerShell)
-
-1) Abra PowerShell no diretório do projeto:
-
-    cd 'C:\\Users\\aluno\\BancoJava'
-
-2) Compilar (recomendado: forçar encoding UTF-8):
-
-    "C:\\caminho\\para\\jdk\\bin\\javac.exe" -encoding UTF-8 *.java
-
-Exemplo (com JDK localizado em `C:\\Program Files (x86)\\Java\\jdk1.8.0_101`):
-
-    & 'C:\\Program Files (x86)\\Java\\jdk1.8.0_101\\bin\\javac.exe' -encoding UTF-8 *.java
-
-3) Executar:
-
-    & 'C:\\Program Files (x86)\\Java\\jdk1.8.0_101\\bin\\java.exe' -cp . SimulacaoBanco
-
-Observações sobre encoding
-
-- Problema comum: compilador reclama de "unmappable character for encoding Cp1252" quando arquivos fonte estão em UTF-8 mas `javac` lê no encoding de plataforma.
-
-- Soluções:
-   - Compilar com `-encoding UTF-8` (simples e portátil).
-   - Configurar o editor (VS Code) para salvar arquivos em UTF-8: `"files.encoding": "utf8"`.
-   - Adicionar JDK ao PATH para facilitar uso do `javac` sem caminho absoluto.
-
-Limpeza (remover classes compiladas)
-
-No PowerShell:
-
-    Get-ChildItem -Path . -Filter '*.class' -Recurse | Remove-Item -Force
-
-Sugestões de melhorias (próximos passos)
-
-- Usar `BigDecimal` para valores monetários: `double` traz erros de arredondamento; `BigDecimal` com escala fixa e `RoundingMode` é o padrão para aplicações financeiras.
-- Tornar APIs consistentes: decidir entre retorno booleano ou exceções para falhas (por exemplo `depositar` atualmente não retorna nada enquanto `sacar` retorna `boolean`).
-- Tratar `transferir` quando `origem == destino` (no-op) e validar `destino != null`.
-- Substituir `System.out.println` por um `Logger` (por exemplo `java.util.logging` ou SLF4J) para controle de níveis, timestamps e fácil desativação em produção.
-- Adicionar testes JUnit: testes unitários para métodos atômicos e testes de estresse concorrente que verificam a invariante da soma total dos saldos.
-- Considerar uso de `ReentrantLock` com `tryLock` e timeout em cenários que podem travar ou bloquear por muito tempo.
-
-Exemplo de teste de invariância (manual)
-
-- Crie N contas com saldos iniciais conhecidos, execute muitas transferências aleatórias entre elas em paralelo e verifique que a soma total dos saldos permaneceu igual (se não houver depósitos/saques externos).
-
-Scripts úteis (opcionais)
-
-- Posso adicionar `build.ps1` (compila com UTF-8), `clean.ps1` (remove .class) e `run.ps1` (compila+executa). Quer que eu os crie e commite?
-
-Licença
-
-- Este é um exemplo educacional. Sinta-se livre para usar/alterar conforme precisar.
-
------
-
-Arquivo gerado/atualizado por assistência — se quiser, eu posso também commitar este README e adicionar scripts auxiliares (`build.ps1`, `clean.ps1`, `run.ps1`) automaticamente.
